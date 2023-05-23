@@ -1,15 +1,13 @@
 import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
-import 'firebase/compat/storage';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyABt5TNZc1EwVqt7WxX_U2L-k-VuKOn72Y",
-    authDomain: "dusmedia-e4bb8.firebaseapp.com",
-    projectId: "dusmedia-e4bb8",
-    storageBucket: "dusmedia-e4bb8.appspot.com",
-    messagingSenderId: "395561482290",
-    appId: "1:395561482290:web:edafdd884f0906f768e42b",
-    measurementId: "G-SPWQZX7Q62"
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID
   };
 
 // firebaseConfig 정보로 firebase 시작
