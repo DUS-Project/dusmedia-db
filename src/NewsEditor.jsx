@@ -14,7 +14,7 @@ import {
   AlertDescription
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
-import { firestore } from './firebase';
+import { firestore, storage } from './firebase';
 
 function NewsEditor() {
   const [news, setNews] = useState([]);
@@ -29,7 +29,17 @@ function NewsEditor() {
   const addNews = async () => {
     try {
       const id = uuidv4(); // unique한 id 생성
-      const newNews = { id, title, mainImage, category, writer, date, contents };
+      const imageName = mainImage.name;
+      const metadata = {
+        customMetadata: {
+          id: id,
+          name: imageName
+        }
+      };
+      const imageRef = storage.ref(`images/${id}/${imageName}?output=media`);
+      await imageRef.put(mainImage, metadata); // storage 서버에 image 업로드
+      const imageURL = await imageRef.getDownloadURL(); // 업로된 이미지 URL 정보 가져오기
+      const newNews = { id, title, mainImage: imageURL, category, writer, date, contents };
       await firestore.collection('news').doc(id).set(newNews);
       setNews([...news, newNews]);
       setTitle('');
@@ -75,6 +85,12 @@ function NewsEditor() {
     }
   };
 
+  const handleMainImageChange = (e) => {
+    if (e.target.files[0]) {
+      setMainImage(e.target.files[0]);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = firestore.collection('news').onSnapshot((snapshot) => {
       const data = [];
@@ -95,7 +111,7 @@ function NewsEditor() {
       </FormControl>
       <FormControl my="4">
         <FormLabel>메인 이미지</FormLabel>
-        <Input type="text" value={mainImage} onChange={(e) => setMainImage(e.target.value)} />
+        <Input type="file" onChange={handleMainImageChange} />
       </FormControl>
       <FormControl isRequired my="4">
         <FormLabel>카테고리</FormLabel>
@@ -116,7 +132,7 @@ function NewsEditor() {
       </FormControl>
       <FormControl isRequired my="4">
         <FormLabel>뉴스 내용</FormLabel>
-        <Textarea value={contents} onChange={(e) => setContents(e.target.value)} />
+        <Textarea value={contents} height="600px" onChange={(e) => setContents(e.target.value)} />
       </FormControl>
       {error && (
         <Alert status="error" my="4">
@@ -165,3 +181,4 @@ function NewsEditor() {
 }
 
 export default NewsEditor;
+
