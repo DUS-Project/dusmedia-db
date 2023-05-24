@@ -26,16 +26,16 @@ const remoteConfig = firebase.remoteConfig();
 // Remote Config를 로드하고 활성화하는 함수 선언
 async function loadRemoteConfig() {
   await remoteConfig.fetchAndActivate();
-  const values = remoteConfig.getAll();
-  return {
-    apiKey: values.FIREBASE_API_KEY.asString(),
-    appId: values.FIREBASE_APP_ID.asString(),
-    authDomain: values.FIREBASE_AUTH_DOMAIN.asString(),
-    measurementId: values.FIREBASE_MEASUREMENT_ID.asString(),
-    messagingSenderId: values.FIREBASE_MESSAGING_SENDER_ID.asString(),
-    projectId: values.FIREBASE_PROJECT_ID.asString(),
-    storageBucket: values.FIREBASE_STORAGE_BUCKET.asString(),
-  };
+
+  const apiKey = getRemoteConfigValue("REACT_APP_FIREBASE_API_KEY");
+  const appId = getRemoteConfigValue("REACT_APP_FIREBASE_APP_ID");
+  const authDomain = getRemoteConfigValue("REACT_APP_FIREBASE_AUTH_DOMAIN");
+  const measurementId = getRemoteConfigValue("REACT_APP_FIREBASE_MEASUREMENT_ID");
+  const messagingSenderId = getRemoteConfigValue("REACT_APP_FIREBASE_MESSAGING_SENDER_ID");
+  const projectId = getRemoteConfigValue("REACT_APP_FIREBASE_PROJECT_ID");
+  const storageBucket = getRemoteConfigValue("REACT_APP_FIREBASE_STORAGE_BUCKET");
+
+  return { apiKey, appId, authDomain, measurementId, messagingSenderId, projectId, storageBucket };
 }
 
 // Remote Config 초기화
@@ -45,18 +45,6 @@ loadRemoteConfig();
 function getRemoteConfigValue(name) {
   return remoteConfig.getString(name);
 }
-
-// Remote Config 사용
-const apiKey = getRemoteConfigValue("REACT_APP_FIREBASE_API_KEY");
-const appId = getRemoteConfigValue("REACT_APP_FIREBASE_APP_ID");
-const authDomain = getRemoteConfigValue("REACT_APP_FIREBASE_AUTH_DOMAIN");
-const measurementId = getRemoteConfigValue("REACT_APP_FIREBASE_MEASUREMENT_ID");
-const messagingSenderId = getRemoteConfigValue("REACT_APP_FIREBASE_MESSAGING_SENDER_ID");
-const projectId = getRemoteConfigValue("REACT_APP_FIREBASE_PROJECT_ID");
-const storageBucket = getRemoteConfigValue("REACT_APP_FIREBASE_STORAGE_BUCKET");
-
-
-
 
 
 export { firebase, firestore, storage };
