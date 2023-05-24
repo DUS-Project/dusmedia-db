@@ -3,7 +3,6 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 import "firebase/compat/remote-config";
 
-
 const firebaseConfig = { 
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY, 
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN, 
@@ -17,41 +16,42 @@ const firebaseConfig = {
 // firebaseConfig 정보로 firebase 시작
 firebase.initializeApp(firebaseConfig);
 
-const firestore = firebase.firestore();
-const storage = firebase.storage();
-
 // Remote Config 가져오기
 const remoteConfig = firebase.remoteConfig();
+remoteConfig.settings = {
+  minimumFetchIntervalMillis: 3600000,
+  fetchTimeoutMillis: 60000,
+  fetchAndActivate: true,
+};
 
-// Remote Config를 로드하고 활성화하는 함수 선언
+// Remote Config 초기화 후 값을 가져오는 함수 선언
 async function loadRemoteConfig() {
+  await remoteConfig.fetchAndActivate();
+  const apiKey = remoteConfig.getValue("REACT_APP_FIREBASE_API_KEY").asString();
+  const appId = remoteConfig.getValue("REACT_APP_FIREBASE_APP_ID").asString();
+  const authDomain = remoteConfig.getValue("REACT_APP_FIREBASE_AUTH_DOMAIN").asString();
+  const measurementId = remoteConfig.getValue("REACT_APP_FIREBASE_MEASUREMENT_ID").asString();
+  const messagingSenderId = remoteConfig.getValue("REACT_APP_FIREBASE_MESSAGING_SENDER_ID").asString();
+  const projectId = remoteConfig.getValue("REACT_APP_FIREBASE_PROJECT_ID").asString();
+  const storageBucket = remoteConfig.getValue("REACT_APP_FIREBASE_STORAGE_BUCKET").asString();
+
+  return { apiKey, appId, authDomain, measurementId, messagingSenderId, projectId, storageBucket };
+}
+
+// Remote Config를 initialize하는 함수 선언
+async function initializeRemoteConfig() {
   try {
     await remoteConfig.ensureInitialized();
-    await remoteConfig.fetchAndActivate();
+    const configValues = await loadRemoteConfig();
+    console.log(configValues);
   } catch (error) {
-    console.error("Error loading remote config:", error);
+    console.error("Error initializing remote config:", error);
   }
 }
 
-// Remote Config 초기화
-loadRemoteConfig();
+initializeRemoteConfig();
 
-// Remote Config 값을 가져오는 함수 선언
-function getRemoteConfigValue(name) {
-  return remoteConfig.getString(name);
-}
-
-// Remote Config 사용
-export const apiKey = getRemoteConfigValue("REACT_APP_FIREBASE_API_KEY");
-export const appId = getRemoteConfigValue("REACT_APP_FIREBASE_APP_ID");
-export const authDomain = getRemoteConfigValue("REACT_APP_FIREBASE_AUTH_DOMAIN");
-export const measurementId = getRemoteConfigValue("REACT_APP_FIREBASE_MEASUREMENT_ID");
-export const messagingSenderId = getRemoteConfigValue("REACT_APP_FIREBASE_MESSAGING_SENDER_ID");
-export const projectId = getRemoteConfigValue("REACT_APP_FIREBASE_PROJECT_ID");
-export const storageBucket = getRemoteConfigValue("REACT_APP_FIREBASE_STORAGE_BUCKET");
-
-
-
-
+const firestore = firebase.firestore();
+const storage = firebase.storage();
 
 export { firebase, firestore, storage };
