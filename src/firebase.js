@@ -1,7 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
-import "firebase/remote-config";
+import "firebase/compat/remote-config";
 
 const firebaseConfig = { 
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY, 
