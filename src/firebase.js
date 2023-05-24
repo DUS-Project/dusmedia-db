@@ -3,15 +3,7 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 import "firebase/compat/remote-config";
 
-const firebaseConfig = { 
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY, 
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN, 
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID, 
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET, 
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID, 
-  appId: process.env.REACT_APP_FIREBASE_APP_ID, 
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID 
-};
+const firebaseConfig = { projectId: "dusmedia-e4bb8" };
 
 // firebaseConfig 정보로 firebase 시작
 firebase.initializeApp(firebaseConfig);
@@ -44,6 +36,18 @@ async function initializeRemoteConfig() {
     await remoteConfig.ensureInitialized();
     const configValues = await loadRemoteConfig();
     console.log(configValues);
+
+    const newFirebaseConfig = {
+      apiKey: configValues.apiKey,
+      authDomain: configValues.authDomain,
+      projectId: configValues.projectId,
+      storageBucket: configValues.storageBucket,
+      messagingSenderId: configValues.messagingSenderId,
+      appId: configValues.appId,
+      measurementId: configValues.measurementId
+    };
+
+    firebase.initializeApp(newFirebaseConfig);
   } catch (error) {
     console.error("Error initializing remote config:", error);
   }
@@ -55,3 +59,4 @@ const firestore = firebase.firestore();
 const storage = firebase.storage();
 
 export { firebase, firestore, storage };
+
