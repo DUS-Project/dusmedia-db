@@ -39,13 +39,13 @@ function getRemoteConfigValue(name) {
 }
 
 // Remote Config 사용
-const apiKey = getRemoteConfigValue("REACT_APP_FIREBASE_API_KEY");
-const appId = getRemoteConfigValue("REACT_APP_FIREBASE_APP_ID");
-const authDomain = getRemoteConfigValue("REACT_APP_FIREBASE_AUTH_DOMAIN");
-const measurementId = getRemoteConfigValue("REACT_APP_FIREBASE_MEASUREMENT_ID");
-const messagingSenderId = getRemoteConfigValue("REACT_APP_FIREBASE_MESSAGING_SENDER_ID");
-const projectId = getRemoteConfigValue("REACT_APP_FIREBASE_PROJECT_ID");
-const storageBucket = getRemoteConfigValue("REACT_APP_FIREBASE_STORAGE_BUCKET");
+export const apiKey = getRemoteConfigValue("REACT_APP_FIREBASE_API_KEY");
+export const appId = getRemoteConfigValue("REACT_APP_FIREBASE_APP_ID");
+export const authDomain = getRemoteConfigValue("REACT_APP_FIREBASE_AUTH_DOMAIN");
+export const measurementId = getRemoteConfigValue("REACT_APP_FIREBASE_MEASUREMENT_ID");
+export const messagingSenderId = getRemoteConfigValue("REACT_APP_FIREBASE_MESSAGING_SENDER_ID");
+export const projectId = getRemoteConfigValue("REACT_APP_FIREBASE_PROJECT_ID");
+export const storageBucket = getRemoteConfigValue("REACT_APP_FIREBASE_STORAGE_BUCKET");
 
 
 
