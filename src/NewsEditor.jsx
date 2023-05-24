@@ -1,25 +1,12 @@
 import { useState, useEffect } from 'react';
-import {
-  Box,
-  Heading,
-  Button,
-  Input,
-  Textarea,
-  FormControl,
-  FormLabel,
-  Select,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription
-} from '@chakra-ui/react';
+import { Box, Heading, Button, Input, Textarea, FormControl, FormLabel, Select, Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { firestore, storage } from './firebase';
 
 function NewsEditor() {
   const [news, setNews] = useState([]);
   const [title, setTitle] = useState('');
-  const [mainImage, setMainImage] = useState('');
+  const [mainImage, setMainImage] = useState(null);
   const [category, setCategory] = useState('');
   const [writer, setWriter] = useState('');
   const [date, setDate] = useState('');
@@ -30,20 +17,37 @@ function NewsEditor() {
     try {
       const id = uuidv4(); // unique한 id 생성
       const imageName = mainImage.name;
-      const metadata = {
-        customMetadata: {
-          id: id,
-          name: imageName
-        }
+
+      // 이미지 크기 체크
+      if(mainImage.size > 10000000) {
+        setError('이미지 용량이 너무 큽니다. 10MB 이하의 이미지를 업로드해주세요.');
+        return;
+      }
+
+      // storage에 파일 업로드하기 - gs://dusmedia-e4bb8.appspot.com
+      const metadata = { customMetadata: { id } };
+      const imageRef = storage.ref(`images/${id}/${imageName}`);
+      await imageRef.put(mainImage, metadata);
+
+      // storage의 저장된 이미지 URL 추출하기
+      const imageURL = await imageRef.getDownloadURL();
+
+      // firestore에 뉴스 데이터 작성하기
+      const newNews = {
+        id,
+        title,
+        mainImage: imageURL,
+        category,
+        writer,
+        date,
+        contents,
       };
-      const imageRef = storage.ref(`images/${id}/${imageName}?output=media`);
-      await imageRef.put(mainImage, metadata); // storage 서버에 image 업로드
-      const imageURL = await imageRef.getDownloadURL(); // 업로된 이미지 URL 정보 가져오기
-      const newNews = { id, title, mainImage: imageURL, category, writer, date, contents };
       await firestore.collection('news').doc(id).set(newNews);
+
+      // 뉴스 데이터 업데이트하고 폼 초기화하기
       setNews([...news, newNews]);
       setTitle('');
-      setMainImage('');
+      setMainImage(null);
       setCategory('');
       setWriter('');
       setDate('');
@@ -61,7 +65,7 @@ function NewsEditor() {
       const index = news.findIndex((news) => news.id === id);
       setNews([...news.slice(0, index), updatedNews, ...news.slice(index + 1)]);
       setTitle('');
-      setMainImage('');
+      setMainImage(null);
       setCategory('');
       setWriter('');
       setDate('');
@@ -111,7 +115,7 @@ function NewsEditor() {
       </FormControl>
       <FormControl my="4">
         <FormLabel>메인 이미지</FormLabel>
-        <Input type="file" onChange={handleMainImageChange} />
+        <Input type="file" onChange={handleMainImageChange} accept="image/*" />
       </FormControl>
       <FormControl isRequired my="4">
         <FormLabel>카테고리</FormLabel>
@@ -168,7 +172,10 @@ function NewsEditor() {
               ml="2"
               size="sm"
               onClick={() =>
-                updateNews(news.id, { ...news, contents: `${news.contents}\n\n[오늘의 뉴스]` })
+                updateNews(news.id, {
+                  ...news,
+                  contents: `${news.contents}\n\n[오늘의 뉴스]`,
+                })
               }
             >
               수정
@@ -181,4 +188,5 @@ function NewsEditor() {
 }
 
 export default NewsEditor;
+
 
