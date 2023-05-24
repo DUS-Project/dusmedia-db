@@ -3,6 +3,7 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 import "firebase/compat/remote-config";
 
+
 const firebaseConfig = { 
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY, 
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN, 
@@ -16,6 +17,8 @@ const firebaseConfig = {
 // firebaseConfig 정보로 firebase 시작
 firebase.initializeApp(firebaseConfig);
 
+const firestore = firebase.firestore();
+const storage = firebase.storage();
 
 // Remote Config 가져오기
 const remoteConfig = firebase.remoteConfig();
@@ -49,7 +52,6 @@ export const storageBucket = getRemoteConfigValue("REACT_APP_FIREBASE_STORAGE_BU
 
 
 
-const firestore = firebase.firestore();
-const storage = firebase.storage();
+
 
 export { firebase, firestore, storage };
