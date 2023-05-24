@@ -14,7 +14,7 @@ import {
   AlertDescription
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
-import { apiKey, firestore, storage } from './firebase';
+import { firestore, storage } from './firebase';
 
 function NewsEditor() {
   const [news, setNews] = useState([]);
