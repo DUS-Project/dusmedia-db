@@ -7,7 +7,7 @@ function NewsEditor() {
   const [news, setNews] = useState([]);
   const [title, setTitle] = useState('');
   const [mainImage, setMainImage] = useState(null);
-  const [category, setCategory] = useState('coin');
+  const [category, setCategory] = useState('all');
   const [writer, setWriter] = useState('');
   const [date, setDate] = useState('');
   const [contents, setContents] = useState('');
@@ -32,15 +32,19 @@ function NewsEditor() {
       // storage의 저장된 이미지 URL 추출하기
       const imageURL = await imageRef.getDownloadURL();
 
+      // createdAt을 추가해 데이터 정렬
+      const createdAt = new Date().getTime();
+
       // firestore에 뉴스 데이터 작성하기
       const newNews = {
         id,
         title,
         mainImage: imageURL,
-        category: category === "" ? 'coin' : category,
+        category: category === "" ? 'all' : category,
         writer,
         date,
         contents,
+        createdAt,
       };
       await firestore.collection('news').doc(id).set(newNews);
 
@@ -120,6 +124,7 @@ function NewsEditor() {
       <FormControl isRequired my="4">
         <FormLabel>카테고리</FormLabel>
         <Select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <optiin value="all" disabled>전체</optiin>
           <option value="coin">암호화폐</option>
           <option value="stock">주식</option>
           <option value="overseas">해외증시</option>
