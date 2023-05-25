@@ -7,7 +7,7 @@ function NewsEditor() {
   const [news, setNews] = useState([]);
   const [title, setTitle] = useState('');
   const [mainImage, setMainImage] = useState(null);
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('coin');
   const [writer, setWriter] = useState('');
   const [date, setDate] = useState('');
   const [contents, setContents] = useState('');
@@ -37,7 +37,7 @@ function NewsEditor() {
         id,
         title,
         mainImage: imageURL,
-        category,
+        category: category === "" ? 'coin' : category,
         writer,
         date,
         contents,
