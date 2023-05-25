@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Box, Heading, Button, Input, Textarea, FormControl, FormLabel, Select, Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { firestore, storage } from './firebase';
+import {format} from 'date-fns/format';
 
 function NewsEditor() {
   const [news, setNews] = useState([]);
@@ -33,7 +34,7 @@ function NewsEditor() {
       const imageURL = await imageRef.getDownloadURL();
 
       // createdAt을 추가해 데이터 정렬
-      const createdAt = new Date().getTime();
+      const createdAt = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
 
       // firestore에 뉴스 데이터 작성하기
       const newNews = {
@@ -124,7 +125,7 @@ function NewsEditor() {
       <FormControl isRequired my="4">
         <FormLabel>카테고리</FormLabel>
         <Select value={category} onChange={(e) => setCategory(e.target.value)}>
-          <optiin value="all" disabled>전체</optiin>
+          <option value="all" disabled>전체</option>
           <option value="coin">암호화폐</option>
           <option value="stock">주식</option>
           <option value="overseas">해외증시</option>
