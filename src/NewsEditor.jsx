@@ -172,11 +172,11 @@ function NewsEditor() {
       <FormControl isRequired my="4">
         <FormLabel>카테고리</FormLabel>
         <Select value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="all">전체</option>
-          <option value="coin">암호화폐</option>
-          <option value="stock">주식</option>
-          <option value="overseas">해외증시</option>
-          <option value="rate">환율금리</option>
+          <option value="전체">전체</option>
+          <option value="암호화폐">암호화폐</option>
+          <option value="주식">주식</option>
+          <option value="해외증시">해외증시</option>
+          <option value="환율금리">환율금리</option>
         </Select>
       </FormControl>
       <FormControl isRequired my="4">
@@ -243,3 +243,16 @@ function NewsEditor() {
 export default NewsEditor;
 
 
+
+// 1. 
+// 관리자 페이지에는 아래와 같이 등록이 되어 있어
+// <FormControl isRequired my="4">
+// <FormLabel>카테고리</FormLabel>
+// <Select value={category} onChange={(e) => setCategory(e.target.value)}>
+//   <option value="all">전체</option>
+//   <option value="coin">암호화폐</option>
+//   <option value="stock">주식</option>
+//   <option value="overseas">해외증시</option>
+//   <option value="rate">환율금리</option>
+// </Select>
+// </FormControl>
