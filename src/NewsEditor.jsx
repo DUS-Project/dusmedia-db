@@ -125,7 +125,7 @@ function NewsEditor() {
       <FormControl isRequired my="4">
         <FormLabel>카테고리</FormLabel>
         <Select value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="all" disabled>전체</option>
+          <option value="all" >전체</option>
           <option value="coin">암호화폐</option>
           <option value="stock">주식</option>
           <option value="overseas">해외증시</option>
