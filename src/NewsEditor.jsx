@@ -31,15 +31,15 @@ function NewsEditor() {
   // 파일 입력 참조를 위해 useRef를 사용
   const fileInput = useRef();
 
-  const updateForm = (news) => {
-    setSelectedId(news.id);
-    setTitle(news.title);
-    setMainImage(null);
-    setCategory(news.category);
-    setWriter(news.writer);
-    // setDate(news.date);
-    setContents(news.contents);
-  };
+  // const updateForm = (news) => {
+  //   setSelectedId(news.id);
+  //   setTitle(news.title);
+  //   setMainImage(null);
+  //   setCategory(news.category);
+  //   setWriter(news.writer);
+  //   // setDate(news.date);
+  //   setContents(news.contents);
+  // };
 
   const addNews = async () => {
     try {
