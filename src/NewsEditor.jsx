@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Box, Heading, Button, Input, Textarea, FormControl, FormLabel, Select, Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { firestore, storage } from './firebase';
-import {format} from 'date-fns/format';
+import { format } from 'date-fns';
 
 function NewsEditor() {
   const [news, setNews] = useState([]);
